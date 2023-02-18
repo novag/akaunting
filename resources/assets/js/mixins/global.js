@@ -129,6 +129,8 @@ export default {
             quantity_name_input: false,
 
             tax_summary: '',
+
+            unit_name_input: false,
         }
     },
 
@@ -198,13 +200,13 @@ export default {
                 try {
                     item.querySelectorAll('[data-tabs-slide]').forEach((slide, index, arr) => {
                         loop += slide.clientWidth;
-    
+
                         slide.classList.add('swiper-slide');
-        
+
                         if (slide.getAttribute('data-tabs') == hash_split) {
                             initial_slide = index;
                         }
-    
+
                         if (loop > item.clientWidth) {
                             slides_view = index;
                             throw BreakException;
@@ -213,27 +215,27 @@ export default {
                 } catch (e) {
                     if (e !== BreakException) throw e;
                 }
-                
+
                 item.querySelector('[data-tabs-swiper]').classList.add('swiper', 'swiper-links');
                 item.querySelector('[data-tabs-swiper-wrapper]').classList.add('swiper-wrapper');
-    
+
                 let html = `
                     <div class="swiper-tabs-container">
                         ${item.querySelector('[data-tabs-swiper]').innerHTML}
                     </div>
-    
+
                     <div class="swiper-button-next bg-body text-white flex items-center justify-center right-0">
                         <span class="material-icons text-purple text-4xl">chevron_right</span>
                     </div>
                     <div class="swiper-button-prev bg-body text-white flex items-center justify-center left-0">
                         <span class="material-icons text-purple text-4xl">chevron_left</span>
                     </div>
-                    `; 
-    
+                    `;
+
                 item.querySelector('[data-tabs-swiper]').innerHTML = html;
                 slides_view = Number(item.getAttribute('data-swiper')) != 0 ? Number(item.getAttribute('data-swiper'))  : slides_view;
                 item.setAttribute('data-swiper', slides_view);
-                                
+
                 new Swiper(item.querySelector('.swiper-tabs-container'), {
                     loop: true,
                     slidesPerView: slides_view,
@@ -251,7 +253,7 @@ export default {
                 item.removeAttribute('data-swiper');
                 item.querySelector('[data-tabs-swiper]').removeAttribute('data-tabs-swiper');
                 item.querySelector('[data-tabs-swiper-wrapper]').removeAttribute('data-tabs-swiper-wrapper');
-    
+
                 item.querySelectorAll('[data-tabs-slide]').forEach((slide) => {
                     slide.removeAttribute('data-tabs-slide');
                 });
@@ -1572,6 +1574,16 @@ export default {
                 this.onFullWidthColumn("quantity_name");
             }
 
+            if (this.form.unit_name == 'custom') {
+                this.unit_name_input = true;
+
+                this.onSmallWidthColumn("unit_name");
+            } else {
+                this.unit_name_input = false;
+
+                this.onFullWidthColumn("unit_name");
+            }
+
             if (this.form.item_name == 'hide' && this.form.hide_item_description === 1) {
                 this.form.hide_item_description = 0;
 
@@ -1583,7 +1595,7 @@ export default {
                             return;
                         }
                     }, this);
-                }   
+                }
 
                 this.$notify({
                     verticalAlign: 'bottom',

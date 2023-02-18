@@ -189,6 +189,15 @@ abstract class Form extends Component
     public $textItemQuantity;
 
     /** @var bool */
+    public $hideItemUnit;
+
+    /** @var bool */
+    public $hideSettingItemUnit;
+
+    /** @var string */
+    public $textItemUnit;
+
+    /** @var bool */
     public $hideItemPrice;
 
     /** @var bool */
@@ -293,7 +302,7 @@ abstract class Form extends Component
         bool $hideIssuedAt = false, string $textIssuedAt = '', string $issuedAt = '', bool $hideDueAt = false, string $textDueAt = '', string $dueAt = '', $periodDueAt = '',
         bool $hideDocumentNumber = false, string $textDocumentNumber = '', string $documentNumber = '', bool $hideOrderNumber = false, string $textOrderNumber = '', string $orderNumber = '',
         bool $hideEditItemColumns = false, bool $hideItems = false, bool $hideItemName = false, bool $hideSettingItemName = false, string $textItemName = '', bool $hideItemDescription = false, bool $hideSettingItemDescription = false, string $textItemDescription = '',
-        bool $hideItemQuantity = false, bool $hideSettingItemQuantity = false, string $textItemQuantity = '', bool $hideItemPrice = false, bool $hideSettingItemPrice = false, string $textItemPrice = '', bool $hideItemAmount = false, bool $hideSettingItemAmount = false, string $textItemAmount = '',
+        bool $hideItemQuantity = false, bool $hideSettingItemQuantity = false, string $textItemQuantity = '', bool $hideItemUnit = false, bool $hideSettingItemUnit = false, string $textItemUnit = '', bool $hideItemPrice = false, bool $hideSettingItemPrice = false, string $textItemPrice = '', bool $hideItemAmount = false, bool $hideSettingItemAmount = false, string $textItemAmount = '',
         bool $hideDiscount = false, bool $isSalePrice = false, bool $isPurchasePrice = false, int $searchCharLimit = 0, string $notes = '',
         bool $showRecurring = false,
         bool $hideAdvanced = false, string $textSectionAdvancedTitle = '', string $textSectionAdvancedDescription = '',
@@ -385,6 +394,10 @@ abstract class Form extends Component
         $this->hideItemQuantity = $this->getHideItemQuantity($type, $hideItemQuantity);
         $this->hideSettingItemQuantity = $this->getHideSettingItemQuantity($type, $hideSettingItemQuantity);
         $this->textItemQuantity = $this->getTextItemQuantity($type, $textItemQuantity);
+
+        $this->hideItemUnit = $this->getHideItemUnit($type, $hideItemUnit);
+        $this->hideSettingItemUnit = $this->getHideSettingItemUnit($type, $hideSettingItemUnit);
+        $this->textItemUnit = $this->getTextItemUnit($type, $textItemUnit);
 
         $this->hideItemPrice = $this->getHideItemPrice($type, $hideItemPrice);
         $this->hideSettingItemPrice = $this->getHideSettingItemPrice($type, $hideSettingItemPrice);
@@ -1060,6 +1073,66 @@ abstract class Form extends Component
         }
 
         return 'invoices.quantity';
+    }
+
+    protected function getHideItemUnit($type, $hideItemUnit): bool
+    {
+        if (! empty($hideItemUnit)) {
+            return $hideItemUnit;
+        }
+
+        $hide = $this->getHideFromConfig($type, 'unit');
+
+        if ($hide) {
+            return $hide;
+        }
+
+        return false;
+    }
+
+    protected function getHideSettingItemUnit($type, $hideSettingItemUnit): bool
+    {
+        if (! empty($hideSettingItemUnit)) {
+            return $hideSettingItemUnit;
+        }
+
+        $hideItemUnit = setting($this->getDocumentSettingKey($type, 'unit_name'), false);
+
+        // if you use setting translation
+        if ($hideItemUnit === 'hide') {
+            return true;
+        }
+
+        return false;
+    }
+
+    protected function getTextItemUnit($type, $textItemUnit)
+    {
+        if (! empty($textItemUnit)) {
+            return $textItemUnit;
+        }
+
+        if (setting($this->getDocumentSettingKey($type, 'unit_name'), 'unit') === 'custom') {
+            if (empty($textItemUnit = setting($this->getDocumentSettingKey($type, 'unit_name_input')))) {
+                $textItemUnit = 'invoices.unit';
+            }
+
+            return $textItemUnit;
+        }
+
+        if (setting($this->getDocumentSettingKey($type, 'unit_name')) !== null
+            && (trans(setting($this->getDocumentSettingKey($type, 'unit_name'))) != setting($this->getDocumentSettingKey($type, 'unit_name')))
+        ) {
+            return setting($this->getDocumentSettingKey($type, 'unit_name'));
+        }
+
+        $translation = $this->getTextFromConfig($type, 'unit');
+
+        if (! empty($translation)) {
+            return $translation;
+        }
+
+        return 'invoices.unit';
     }
 
     protected function getHideItemPrice($type, $hideItemPrice): bool
