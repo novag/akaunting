@@ -29,10 +29,17 @@ class Invoice extends SettingController
             'custom' => trans('settings.invoice.custom'),
         ];
 
+        $unit_names = [
+            'hide' => trans('settings.invoice.hide.unit'),
+            'settings.invoice.unit' => trans('settings.invoice.unit'),
+            'custom' => trans('settings.invoice.custom'),
+        ];
+
         return view('settings.invoice.edit', compact(
             'item_names',
             'price_names',
-            'quantity_names'
+            'quantity_names',
+            'unit_names',
         ));
     }
 }

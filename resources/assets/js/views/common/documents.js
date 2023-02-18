@@ -362,6 +362,7 @@ const app = new Vue({
                 this.form.items[index].name = item.name;
                 this.form.items[index].description = item.description;
                 this.form.items[index].quantity = item.quantity;
+                this.form.items[index].unit = item.unit;
                 this.form.items[index].price = item.price;
                 this.form.items[index].tax_ids = item_tax_ids;
                 this.form.items[index].discount = item.discount;
@@ -619,6 +620,7 @@ const app = new Vue({
                 name: item.name,
                 description: item.description,
                 quantity: 1,
+                unit: '',
                 price: item.price,
                 tax_ids: item.tax_ids,
                 discount: 0,
@@ -630,6 +632,7 @@ const app = new Vue({
                 name: item.name,
                 description: item.description,
                 quantity: 1,
+                unit: '',
                 price: item.price,
                 add_tax: false,
                 tax_ids: item_taxes,
@@ -913,6 +916,7 @@ const app = new Vue({
                     name: item.name,
                     description: item.description === null ? "" : item.description,
                     quantity: item.quantity,
+                    unit: item.unit,
                     price: (item.price).toFixed(this.currency.precision ?? 2),
                     tax_ids: item.tax_ids,
                     discount: item.discount_rate,
@@ -949,6 +953,7 @@ const app = new Vue({
                     name: item.name,
                     description: item.description === null ? "" : item.description,
                     quantity: item.quantity,
+                    unit: item.unit,
                     price: (item.price).toFixed(this.currency.precision ?? 2),
                     add_tax: false,
                     tax_ids: item_taxes,

@@ -51,15 +51,24 @@ class DocumentItemColumns extends Controller
             'custom' => trans('settings.invoice.custom'),
         ];
 
+        $unit_names = [
+            'hide' => trans('settings.invoice.hide.unit'),
+            'settings.invoice.unit' => trans('settings.' . $type . '.unit'),
+            'custom' => trans('settings.invoice.custom'),
+        ];
+
         $item_name             = setting($this->getDocumentSettingKey($type, 'item_name'));
         $item_name_input       = setting($this->getDocumentSettingKey($type, 'item_name_input'));
         $price_name            = setting($this->getDocumentSettingKey($type, 'price_name'));
         $price_name_input      = setting($this->getDocumentSettingKey($type, 'price_name_input'));
         $quantity_name         = setting($this->getDocumentSettingKey($type, 'quantity_name'));
         $quantity_name_input   = setting($this->getDocumentSettingKey($type, 'quantity_name_input'));
+        $unit_name             = setting($this->getDocumentSettingKey($type, 'unit_name'));
+        $unit_name_input       = setting($this->getDocumentSettingKey($type, 'unit_name_input'));
         $hide_item_name        = setting($this->getDocumentSettingKey($type, 'hide_item_name'));
         $hide_item_description = setting($this->getDocumentSettingKey($type, 'hide_item_description'));
         $hide_quantity         = setting($this->getDocumentSettingKey($type, 'hide_quantity'));
+        $hide_unit             = setting($this->getDocumentSettingKey($type, 'hide_unit'));
         $hide_price            = setting($this->getDocumentSettingKey($type, 'hide_price'));
         $hide_amount           = setting($this->getDocumentSettingKey($type, 'hide_amount'));
 
@@ -68,15 +77,19 @@ class DocumentItemColumns extends Controller
             'item_names',
             'price_names',
             'quantity_names',
+            'unit_names',
             'item_name',
             'item_name_input',
             'price_name',
             'price_name_input',
             'quantity_name',
             'quantity_name_input',
+            'unit_name',
+            'unit_name_input',
             'hide_item_name',
             'hide_item_description',
             'hide_quantity',
+            'hide_unit',
             'hide_price',
             'hide_amount',
         ))->render();

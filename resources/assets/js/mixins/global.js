@@ -129,6 +129,8 @@ export default {
             quantity_name_input: false,
 
             tax_summary: '',
+
+            unit_name_input: false,
         }
     },
 
@@ -228,7 +230,7 @@ export default {
                     <div class="swiper-button-prev bg-body text-white flex items-center justify-center left-0">
                         <span class="material-icons text-purple text-4xl">chevron_left</span>
                     </div>
-                    `; 
+                    `;
 
                 item.querySelector('[data-tabs-swiper]').innerHTML = html;
                 slides_view = Number(item.getAttribute('data-swiper')) != 0 ? Number(item.getAttribute('data-swiper'))  : slides_view;
@@ -1574,6 +1576,16 @@ export default {
                 this.quantity_name_input = false;
 
                 this.onFullWidthColumn("quantity_name");
+            }
+
+            if (this.form.unit_name == 'custom') {
+                this.unit_name_input = true;
+
+                this.onSmallWidthColumn("unit_name");
+            } else {
+                this.unit_name_input = false;
+
+                this.onFullWidthColumn("unit_name");
             }
 
             if (this.form.item_name == 'hide' && this.form.hide_item_description === 1) {
