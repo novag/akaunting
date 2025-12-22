@@ -1,0 +1,61 @@
+# Git
+.git
+.gitignore
+.github
+
+# IDE
+.idea
+.vscode
+.phpstorm.meta.php
+_ide_helper.php
+_ide_helper_models.php
+
+# Dependencies (will be installed in container)
+node_modules
+vendor
+
+# Build artifacts
+public/hot
+public/js
+public/mix-manifest.json
+public/storage
+
+# Storage
+storage/*.key
+storage/debugbar/*
+storage/logs/*
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/views/*
+
+# Environment
+.env
+.env.*
+
+# Documentation
+README.md
+SECURITY.md
+LICENSE.txt
+
+# Tests
+tests
+phpunit.xml
+.phpunit.result.cache
+
+# Development files
+Homestead.json
+Homestead.yaml
+npm-debug.log
+.DS_Store
+safelist.txt
+
+# Modules (user-specific)
+modules/*
+!modules/.gitkeep
+
+# Docker files (don't copy into container)
+Dockerfile
+.dockerignore
+docker-compose.yml
+docker-compose.*.yml
+
