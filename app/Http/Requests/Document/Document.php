@@ -42,12 +42,15 @@ class Document extends FormRequest
             $attachment = 'mimes:' . config('filesystems.mimes') . '|between:0,' . config('filesystems.max_size') * 1024;
         }
 
+        $id = is_numeric($id) ? (int) $id : null;
+        $ignoreId = $id ?? 'NULL';
+
         // Get company id
         $company_id = (int) $this->request->get('company_id');
 
         $rules = [
             'type'                  => 'required|string',
-            'document_number'       => 'required|string|unique:documents,NULL,' . ($id ?? 'null') . ',id,type,' . $type . ',company_id,' . $company_id . ',deleted_at,NULL',
+            'document_number'       => 'required|string|unique:documents,NULL,' . $ignoreId . ',id,type,' . $type . ',company_id,' . $company_id . ',deleted_at,NULL',
             //'status'                => 'required|string|in:draft,paid,partial,sent,received,viewed,cancelled',
             'status'                => 'required|string',
             'issued_at'             => 'required|date_format:Y-m-d H:i:s|before_or_equal:due_at',

@@ -5,6 +5,7 @@ namespace App\Http\Requests\Banking;
 use App\Abstracts\Http\FormRequest;
 use App\Models\Banking\Transaction as Model;
 use App\Utilities\Date;
+use Illuminate\Validation\Rule;
 
 class Transaction extends FormRequest
 {
@@ -37,9 +38,14 @@ class Transaction extends FormRequest
             $attachment = 'mimes:' . config('filesystems.mimes') . '|between:0,' . config('filesystems.max_size') * 1024;
         }
 
+        $uniqueNumber = Rule::unique('transactions', 'number')->where(fn ($q) => $q->where('company_id', $company_id)->whereNull('deleted_at'));
+        if (is_numeric($id) && (int) $id > 0) {
+            $uniqueNumber->ignore((int) $id);
+        }
+
         $rules = [
             'type' => 'required|string',
-            'number' => 'required|string|unique:transactions,NULL,' . ($id ?? 'null') . ',id,company_id,' . $company_id . ',deleted_at,NULL',
+            'number' => ['required', 'string', $uniqueNumber],
             'account_id' => 'required|integer',
             'paid_at' => 'required|date_format:Y-m-d H:i:s',
             'amount' => 'required|amount:0',
