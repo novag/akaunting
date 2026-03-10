@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider as Provider;
 use Laravel\Sanctum\Sanctum;
@@ -26,6 +27,21 @@ class App extends Provider
         }
 
         Sanctum::ignoreMigrations();
+
+        if (env('ALLOW_SELF_SIGNED_CERTS', false)) {
+            // Set default stream context for all PHP stream functions
+            // (file_get_contents, fopen, etc.) and dompdf
+            stream_context_set_default([
+                'ssl' => [
+                    'verify_peer' => false,
+                    'verify_peer_name' => false,
+                    'allow_self_signed' => true,
+                ],
+            ]);
+
+            // Configure Laravel's HTTP client (Guzzle)
+            Http::globalOptions(['verify' => false]);
+        }
     }
 
     /**
